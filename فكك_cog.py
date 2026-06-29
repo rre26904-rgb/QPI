@@ -316,7 +316,10 @@ class fkkgame(commands.Cog):
             {"image": "فكك_298.png", "answer": "س ا ع ة"},
             {"image": "فكك_299.png", "answer": "خ ا ت م"},
             {"image": "فكك_300.png", "answer": "س و ا ر"}
-            ]
+
+
+         ]
+
 
     # 🟢 دالة قراءة النقاط وتحديثها في الملف الموحد مباشرة
     def add_score(self, user_id):
@@ -337,7 +340,7 @@ class fkkgame(commands.Cog):
             
         return scores[user_id_str]
 
-    @commands.command(name="فكك")
+    @commands.command(name="-فكك")
     async def start_game_cmd(self, ctx):
         await self.run_game(ctx.channel)
 
@@ -345,7 +348,7 @@ class fkkgame(commands.Cog):
     async def on_message(self, message):
         if message.author.bot:
             return
-        if message.content.strip() == "فكك":
+        if message.content.strip() == "-فكك":
             await self.run_game(message.channel)
 
     async def run_game(self, channel):
@@ -390,7 +393,7 @@ class fkkgame(commands.Cog):
                     
                     # زر النقاط (شفاف/رمادي مع نجمة)
                     score_button = discord.ui.Button(
-                        label=f" 𐙚⋆        {new_score}",
+                        label=f" 𐙚        {new_score}",
                         style=discord.ButtonStyle.secondary,
                         disabled=True,
                     )
