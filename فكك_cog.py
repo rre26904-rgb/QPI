@@ -390,7 +390,7 @@ class fkkgame(commands.Cog):
                     
                     # زر النقاط (شفاف/رمادي مع نجمة)
                     score_button = discord.ui.Button(
-                        label=f"⋆. 𐙚 ˚     {new_score}",
+                        label=f" 𐙚⋆        {new_score}",
                         style=discord.ButtonStyle.secondary,
                         disabled=True,
                     )
