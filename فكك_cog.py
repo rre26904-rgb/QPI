@@ -390,20 +390,33 @@ class fkkgame(commands.Cog):
                     
                     # زر النقاط (شفاف/رمادي مع نجمة)
                     score_button = discord.ui.Button(
-                        label=f"✮⋆˙{new_score}",
+                        label=f"⋆. 𐙚 ˚  {new_score}",
                         style=discord.ButtonStyle.secondary,
                         disabled=True,
                     )
                     
-                    # زر السيرفر (زر رابط مع 3 نجوم بيضاء)
-                    server_button = discord.ui.Button(
-                        label=".*･｡ﾟ☆ﾟ.*･｡ﾟ", 
-                        style=discord.ButtonStyle.link,
-                        url="https://discord.gg/dyk6a9c6Gs" # حط رابط السيرفر حقك هنا
+                
+
+                    # الزر السحري (للدعم)
+                    magic_button = discord.ui.Button(
+                        label="⋆. 𐙚 ˚",
+                        style=discord.ButtonStyle.success # زر أخضر
                     )
 
+                    # الدالة اللي تتنفذ لما ينضغط الزر السحري
+                    async def magic_callback(interaction: discord.Interaction):
+                        await interaction.response.send_message(
+                            "👋 أهلاً بك! هذا سيرفر الدعم الفني الخاص بنا. حياك الله:\nhttps://discord.gg/zkJpxjk2rN", 
+                            ephemeral=True # هذي تخلي الرسالة تطلع للي ضغط الزر بس
+                        )
+                    
+                    # ربط الدالة بالزر
+                    magic_button.callback = magic_callback
+
+                    # إضافة الأزرار للرسالة
                     view.add_item(score_button)
                     view.add_item(server_button)
+                    view.add_item(magic_button)
 
                     await channel.send(embed=embed, view=view)
                     break 
