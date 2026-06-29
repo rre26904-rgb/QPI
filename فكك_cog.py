@@ -382,17 +382,28 @@ class fkkgame(commands.Cog):
 
                     embed = discord.Embed(
                         title="",
-                        description=f" {msg.author.mention}،فاز في اللعبة!",
+                        description=f" {msg.author.mention} فاز في اللعبة!",
                         color=discord.Color.green(),
                     )
 
                     view = discord.ui.View()
-                    button = discord.ui.Button(
-                        label=f" : {new_score}",
-                        style=discord.ButtonStyle.primary,
+                    
+                    # زر النقاط (شفاف/رمادي مع نجمة)
+                    score_button = discord.ui.Button(
+                        label=f"⭐ : {new_score}",
+                        style=discord.ButtonStyle.secondary,
                         disabled=True,
                     )
-                    view.add_item(button)
+                    
+                    # زر السيرفر (زر رابط مع 3 نجوم بيضاء)
+                    server_button = discord.ui.Button(
+                        label="سيرفرنا 🤍🤍🤍", 
+                        style=discord.ButtonStyle.link,
+                        url="https://discord.gg/YOUR_LINK_HERE" # حط رابط السيرفر حقك هنا
+                    )
+
+                    view.add_item(score_button)
+                    view.add_item(server_button)
 
                     await channel.send(embed=embed, view=view)
                     break 
