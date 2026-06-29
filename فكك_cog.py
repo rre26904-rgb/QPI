@@ -390,7 +390,7 @@ class fkkgame(commands.Cog):
                     
                     # زر النقاط (شفاف/رمادي مع نجمة)
                     score_button = discord.ui.Button(
-                        label=f"⋆. 𐙚 ˚  {new_score}",
+                        label=f"⋆. 𐙚 ˚     {new_score}",
                         style=discord.ButtonStyle.secondary,
                         disabled=True,
                     )
@@ -398,7 +398,7 @@ class fkkgame(commands.Cog):
                     # الزر السحري (للدعم)
                     magic_button = discord.ui.Button(
                         label="⋆. 𐙚 ˚",
-                        style=discord.ButtonStyle.success # زر أخضر
+                        style=discord.ButtonStyle.secondary  
                     )
 
                     # الدالة اللي تتنفذ لما ينضغط الزر السحري
