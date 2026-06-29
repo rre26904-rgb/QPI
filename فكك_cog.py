@@ -390,14 +390,14 @@ class fkkgame(commands.Cog):
                     
                     # زر النقاط (شفاف/رمادي مع نجمة)
                     score_button = discord.ui.Button(
-                        label=f"⭐ : {new_score}",
+                        label=f"✮⋆˙{new_score}",
                         style=discord.ButtonStyle.secondary,
                         disabled=True,
                     )
                     
                     # زر السيرفر (زر رابط مع 3 نجوم بيضاء)
                     server_button = discord.ui.Button(
-                        label="🤍", 
+                        label=".*･｡ﾟ☆ﾟ.*･｡ﾟ", 
                         style=discord.ButtonStyle.link,
                         url="https://discord.gg/dyk6a9c6Gs" # حط رابط السيرفر حقك هنا
                     )
