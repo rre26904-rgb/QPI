@@ -397,9 +397,9 @@ class fkkgame(commands.Cog):
                     
                     # زر السيرفر (زر رابط مع 3 نجوم بيضاء)
                     server_button = discord.ui.Button(
-                        label="سيرفرنا 🤍🤍🤍", 
+                        label="🤍", 
                         style=discord.ButtonStyle.link,
-                        url="https://discord.gg/YOUR_LINK_HERE" # حط رابط السيرفر حقك هنا
+                        url="https://discord.gg/dyk6a9c6Gs" # حط رابط السيرفر حقك هنا
                     )
 
                     view.add_item(score_button)
