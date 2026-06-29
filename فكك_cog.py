@@ -394,8 +394,6 @@ class fkkgame(commands.Cog):
                         style=discord.ButtonStyle.secondary,
                         disabled=True,
                     )
-                    
-                
 
                     # الزر السحري (للدعم)
                     magic_button = discord.ui.Button(
@@ -415,7 +413,6 @@ class fkkgame(commands.Cog):
 
                     # إضافة الأزرار للرسالة
                     view.add_item(score_button)
-                    view.add_item(server_button)
                     view.add_item(magic_button)
 
                     await channel.send(embed=embed, view=view)
