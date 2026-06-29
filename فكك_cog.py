@@ -383,7 +383,7 @@ class fkkgame(commands.Cog):
                     embed = discord.Embed(
                         title=" ",
                         description=f" {msg.author.mention}،فاز في اللعبة!",
-                        color=discord.Color.black(),
+                        color=discord.Color.red(),
                     )
 
                     view = discord.ui.View()
