@@ -381,9 +381,9 @@ class fkkgame(commands.Cog):
                     new_score = self.add_score(msg.author.id)
 
                     embed = discord.Embed(
-                        title=" ",
+                        title="",
                         description=f" {msg.author.mention}،فاز في اللعبة!",
-                        color=discord.Color.red(),
+                        color=discord.Color.green(),
                     )
 
                     view = discord.ui.View()
