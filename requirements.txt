@@ -1,0 +1,5 @@
+discord.py==2.7.1
+Pillow==10.4.0
+aiosqlite==0.20.0
+humanize==4.10.0
+matplotlib==3.9.0
