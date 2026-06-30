@@ -5,7 +5,7 @@ import sys
 import aiohttp
 
 # --- ضع الآيدي الخاص بك هنا ---
-OWNER_ID = 123456789012345678 
+OWNER_ID = 1180967030518722580 
 
 # --- 1. النوافذ المنبثقة (Modals) ---
 class NameModal(discord.ui.Modal, title='تغيير اسم البوت'):
