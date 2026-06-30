@@ -421,7 +421,7 @@ class CodenamesCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="كودنيمز", aliases=["كودنيمز"])
+    @commands.command(name="كودنيمز", aliases=["كودنيم"])
     async def start_setup(self, ctx):
         embed = discord.Embed(
             title="🎯 لعبة Codenames", 
