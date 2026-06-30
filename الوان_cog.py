@@ -190,7 +190,7 @@ class ColorGameCog(commands.Cog):
         if message.author.bot:
             return
             
-        if message.content.strip() == "الوان":
+        if message.content.strip() == "-الوان":
             # 🟢 الفحص باستخدام القفل العام المشترك لمنع التداخل
             if message.channel.id in self.bot.global_game_lock:
                 await message.channel.send("⚠️ هناك لعبة جارية بالفعل في هذا الروم! انتظر حتى تنتهي.")
