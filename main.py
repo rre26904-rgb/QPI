@@ -10,7 +10,7 @@ if sys.platform == 'win32':
 
 # 🔒 تعديل التوكن: جلب التوكن بشكل آمن من متغيرات السيرفر (Railway)
 TOKEN = os.getenv("DISCORD_TOKEN") 
-owner_ids={1180967030518722580}.
+
 
 intents = discord.Intents.default()
 intents.message_content = True 
