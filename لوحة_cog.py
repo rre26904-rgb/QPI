@@ -1,20 +1,15 @@
 import discord
-from discord import app_commands
 from discord.ext import commands
 import os
 import sys
 import aiohttp
 
 # --- ضع الآيدي الخاص بك هنا ---
-OWNER_ID = 1180967030518722580 
-
-# دالة التحقق من الأونر
-def is_owner_check(interaction: discord.Interaction):
-    return interaction.user.id == OWNER_ID
+OWNER_ID = 123456789012345678 
 
 # --- 1. النوافذ المنبثقة (Modals) ---
 class NameModal(discord.ui.Modal, title='تغيير اسم البوت'):
-    new_name = discord.ui.TextInput(label='الاسم الجديد', placeholder='أدخل الاسم هنا...', min_length=2, max_length=32)
+    new_name = discord.ui.TextInput(label='الاسم الجديد', placeholder='أدخل الاسم...', min_length=2, max_length=32)
     async def on_submit(self, interaction: discord.Interaction):
         await interaction.client.user.edit(username=self.new_name.value)
         await interaction.response.send_message(f"✅ تم تغيير الاسم إلى: **{self.new_name.value}**", ephemeral=True)
@@ -36,7 +31,7 @@ class ImageModal(discord.ui.Modal):
             await interaction.followup.send(f"✅ تم تحديث {self.action_type} بنجاح!", ephemeral=True)
         except Exception as e: await interaction.followup.send(f"❌ خطأ: {e}", ephemeral=True)
 
-# --- 2. اللوحة (View) ---
+# --- 2. لوحة التحكم (View) ---
 class BotControlView(discord.ui.View):
     def __init__(self, bot, cog):
         super().__init__(timeout=None)
@@ -81,28 +76,28 @@ class SystemCog(commands.Cog):
         self.bot = bot
 
     async def get_stats_embed(self):
-        embed = discord.Embed(title="📊 لوحة التحكم والإحصائيات", color=discord.Color.dark_theme())
+        embed = discord.Embed(title="📊 لوحة التحكم", color=discord.Color.dark_theme())
         embed.add_field(name="🌐 السيرفرات", value=f"`{len(self.bot.guilds)}`", inline=True)
         embed.add_field(name="⚡ البينج", value=f"`{round(self.bot.latency * 1000)}ms`", inline=True)
+        embed.set_footer(text="مُخصص للمالك فقط")
         return embed
 
-    # --- أوامر السلاش (Slash Commands) ---
-    
-    @app_commands.command(name="احصاء", description="عرض لوحة التحكم")
-    @app_commands.check(is_owner_check)
-    async def stats_slash(self, interaction: discord.Interaction):
-        await interaction.response.send_message(embed=await self.get_stats_embed(), view=BotControlView(self.bot, self))
+    # أوامر Prefix العادية
+    @commands.command(name="احصاء")
+    async def stats_command(self, ctx):
+        if ctx.author.id != OWNER_ID: return
+        await ctx.send(embed=await self.get_stats_embed(), view=BotControlView(self.bot, self))
 
-    @app_commands.command(name="ping", description="معرفة سرعة البوت")
-    @app_commands.check(is_owner_check)
-    async def ping_slash(self, interaction: discord.Interaction):
-        await interaction.response.send_message(f"🏓 `{round(self.bot.latency * 1000)}ms`", ephemeral=True)
+    @commands.command(name="ping")
+    async def ping_command(self, ctx):
+        if ctx.author.id != OWNER_ID: return
+        await ctx.send(f"🏓 `{round(self.bot.latency * 1000)}ms`")
 
-    @app_commands.command(name="sync", description="تحديث أوامر السلاش")
-    @app_commands.check(is_owner_check)
-    async def sync_slash(self, interaction: discord.Interaction):
-        await self.bot.tree.sync()
-        await interaction.response.send_message("✅ تم تحديث الأوامر بنجاح!", ephemeral=True)
+    @commands.command(name="reload")
+    async def reload_command(self, ctx, ext):
+        if ctx.author.id != OWNER_ID: return
+        await self.bot.reload_extension(f'cogs.{ext}')
+        await ctx.send(f"🔄 تم تحديث الكوج: `{ext}`")
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(SystemCog(bot))
