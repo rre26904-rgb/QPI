@@ -34,8 +34,20 @@ class ImageModal(discord.ui.Modal):
 # --- 2. القائمة المنسدلة (Cogs Select) ---
 class CogsSelect(discord.ui.Select):
     def __init__(self, bot):
-        options = [discord.SelectOption(label=cog, description="ملف كوج نشط") for cog in bot.cogs]
-        if not options: options = [discord.SelectOption(label="لا يوجد", description="لا توجد ملفات محملة")]
+        options = []
+        # استخراج اسم الملف الفعلي بدلاً من اسم الكلاس
+        for name, cog in bot.cogs.items():
+            # module يحتوي على مسار الملف مثل cogs.admin
+            # نقوم بأخذ الجزء الأخير بعد النقطة للحصول على اسم الملف
+            module_name = cog.__module__.split('.')[-1]
+            options.append(discord.SelectOption(
+                label=module_name, 
+                description=f"الكلاس: {name}" # نضع اسم الكلاس في الوصف لتعرف الفرق
+            ))
+            
+        if not options: 
+            options = [discord.SelectOption(label="لا يوجد", description="لا توجد ملفات محملة")]
+            
         super().__init__(placeholder="📂 استعراض الكوجات المحملة...", min_values=1, max_values=1, options=options, row=2)
 
     async def callback(self, interaction: discord.Interaction):
