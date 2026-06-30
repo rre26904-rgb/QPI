@@ -4,12 +4,12 @@ import os
 import sys
 import aiohttp
 
-# --- ضع الآيدي الخاص بك هنا ---
-OWNER_ID = 1180967030518722580 
+# --- إعدادات المالك ---
+OWNER_ID = 1180967030518722580  # ضع الآيدي الخاص بك هنا
 
 # --- 1. النوافذ المنبثقة (Modals) ---
 class NameModal(discord.ui.Modal, title='تغيير اسم البوت'):
-    new_name = discord.ui.TextInput(label='الاسم الجديد', placeholder='أدخل الاسم...', min_length=2, max_length=32)
+    new_name = discord.ui.TextInput(label='الاسم الجديد', placeholder='أدخل الاسم هنا...', min_length=2, max_length=32)
     async def on_submit(self, interaction: discord.Interaction):
         await interaction.client.user.edit(username=self.new_name.value)
         await interaction.response.send_message(f"✅ تم تغيير الاسم إلى: **{self.new_name.value}**", ephemeral=True)
@@ -31,12 +31,23 @@ class ImageModal(discord.ui.Modal):
             await interaction.followup.send(f"✅ تم تحديث {self.action_type} بنجاح!", ephemeral=True)
         except Exception as e: await interaction.followup.send(f"❌ خطأ: {e}", ephemeral=True)
 
-# --- 2. لوحة التحكم (View) ---
+# --- 2. القائمة المنسدلة (Cogs Select) ---
+class CogsSelect(discord.ui.Select):
+    def __init__(self, bot):
+        options = [discord.SelectOption(label=cog, description="ملف كوج نشط") for cog in bot.cogs]
+        if not options: options = [discord.SelectOption(label="لا يوجد", description="لا توجد ملفات محملة")]
+        super().__init__(placeholder="📂 استعراض الكوجات المحملة...", min_values=1, max_values=1, options=options, row=2)
+
+    async def callback(self, interaction: discord.Interaction):
+        await interaction.response.send_message(f"🧩 الملف المحدد: `{self.values[0]}`", ephemeral=True)
+
+# --- 3. لوحة التحكم المتكاملة (View) ---
 class BotControlView(discord.ui.View):
     def __init__(self, bot, cog):
         super().__init__(timeout=None)
         self.bot = bot
         self.cog = cog
+        self.add_item(CogsSelect(bot)) # إضافة القائمة المنسدلة
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         if interaction.user.id == OWNER_ID: return True
@@ -70,34 +81,27 @@ class BotControlView(discord.ui.View):
         await interaction.response.send_message("🛑 تم الإيقاف.", ephemeral=True)
         await self.bot.close()
 
-# --- 3. الكوج الرئيسي ---
+# --- 4. الكوج الرئيسي ---
 class SystemCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     async def get_stats_embed(self):
-        embed = discord.Embed(title="📊 لوحة التحكم", color=discord.Color.dark_theme())
-        embed.add_field(name="🌐 السيرفرات", value=f"`{len(self.bot.guilds)}`", inline=True)
-        embed.add_field(name="⚡ البينج", value=f"`{round(self.bot.latency * 1000)}ms`", inline=True)
-        embed.set_footer(text="مُخصص للمالك فقط")
+        # حساب المستخدمين الفعليين
+        users_count = sum(g.member_count for g in self.bot.guilds if g.member_count)
+        
+        embed = discord.Embed(title="📊 لوحة التحكم والإحصائيات", color=discord.Color.dark_blue())
+        embed.add_field(name="🌐 عدد السيرفرات", value=f"`{len(self.bot.guilds)}`", inline=True)
+        embed.add_field(name="👥 إجمالي الأعضاء", value=f"`{users_count}`", inline=True)
+        embed.add_field(name="⚡ سرعة الاستجابة", value=f"`{round(self.bot.latency * 1000)}ms`", inline=True)
+        embed.add_field(name="📁 الكوجات المحملة", value=f"`{len(self.bot.cogs)}`", inline=True)
+        embed.set_footer(text="استخدم القائمة بالأسفل لاستعراض الكوجات")
         return embed
 
-    # أوامر Prefix العادية
-    @commands.command(name="احصاء")
+    @commands.command(name="لوحة")
     async def stats_command(self, ctx):
         if ctx.author.id != OWNER_ID: return
         await ctx.send(embed=await self.get_stats_embed(), view=BotControlView(self.bot, self))
-
-    @commands.command(name="ping")
-    async def ping_command(self, ctx):
-        if ctx.author.id != OWNER_ID: return
-        await ctx.send(f"🏓 `{round(self.bot.latency * 1000)}ms`")
-
-    @commands.command(name="reload")
-    async def reload_command(self, ctx, ext):
-        if ctx.author.id != OWNER_ID: return
-        await self.bot.reload_extension(f'cogs.{ext}')
-        await ctx.send(f"🔄 تم تحديث الكوج: `{ext}`")
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(SystemCog(bot))
