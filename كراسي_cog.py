@@ -162,8 +162,8 @@ class KrasiCog(commands.Cog):
                 new_score = "؟"
 
             winner_embed = discord.Embed(
-                title="🏆 مبرووووووك 🏆",
-                description=f"ملك الكراسي المحترف في هذه اللعبة هو:\n👑 {winner.mention} 👑",
+                title="",
+                description=f"     فاز في العبة:\n👑 {winner.mention} 👑",
                 color=0xfadb14
             )
             
